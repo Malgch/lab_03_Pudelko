@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace PudelkoLibrary
 {
+
     public class Pudelko
     {
         public double A { get; init; }
@@ -17,8 +18,17 @@ namespace PudelkoLibrary
             A = a;
             B = b;
             C = c;
+
+            if (a || b || c > 10)
+            {
+                throw new ArgumentException("");
+            }
         }
 
         public Pudelko() : this(10, 10, 10) { }
+
+
+
+
     }
 }
