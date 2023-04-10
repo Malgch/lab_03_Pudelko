@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace PudelkoLibrary.Enums
 {
 
-    public enum Size
+    public enum UnitOfMeasure
     {
-        Cm,
-        Mm,
-        M
+        centimeter,
+        milimeter,
+        meter
     }
 }
