@@ -41,18 +41,52 @@ namespace PudelkoLibrary
             this.c = c;
             this.Unit = unit;
 
+            //conversion
+            double aMeters = ConvertToMeters(a, Unit);
+            double bMeters = ConvertToMeters(b, Unit);
+            double cMeters = ConvertToMeters(c, Unit);
 
-            if ((a > 10 ) || ( b > 10) || (c > 10))
+
+            if ((a <= 0) || (b <= 0) || (c <= 0))
+            {
+                throw new ArgumentOutOfRangeException("The sizes of the box can not have negative values!");
+            }
+            else if ((aMeters > 10) || (bMeters > 10) || (cMeters > 10))
             {
                 throw new ArgumentOutOfRangeException("The size of box can not be greater than 10 meters!");
             }
-            else if ((a <= 0) || (b <= 0) || (c <= 0))
+
+            switch (unit)
             {
-                throw new ArgumentOutOfRangeException("The sizes of the box can not have negative values!");
-            }    
+                case UnitOfMeasure.meter:
+                    {
+                        if ((a > 10) || (b > 10) || (c > 10))
+                        {
+                            
+                        }
+                        break;
+                    }
+                case UnitOfMeasure.centimeter:
+                    {
+                        if ((a > 100) || (b > 100) || (c > 10))
+                        {
+                            throw new ArgumentOutOfRangeException("The size of box can not be greater than 10 meters!");
+                        }
+                        break;
+
+                    }
+                case UnitOfMeasure.milimeter:
+                    {
+                        if ((a > 1000) || (b > 1000) || (c > 1000))
+                        {
+                            throw new ArgumentOutOfRangeException("The size of box can not be greater than 10 meters!");
+                        }
+                        break;
+
+                    }
+            } 
         }
 
-        public Pudelko() : this(10, 10, 10, UnitOfMeasure.centimeter) { }
 
         private double ConvertToMeters(double value, UnitOfMeasure unit)
         {
@@ -61,9 +95,9 @@ namespace PudelkoLibrary
                 case UnitOfMeasure.meter:
                     return value;
                 case UnitOfMeasure.centimeter:
-                    return value * 100;
+                    return Math.Round(value / 100, 1);
                 case UnitOfMeasure.milimeter:
-                    return value * 1000;
+                    return Math.Round(value / 1000, 0);
                 default:
                     throw new ArgumentException("Please provide correct unit of measure");
             }
