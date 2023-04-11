@@ -47,7 +47,7 @@ namespace PudelkoLibrary
             double cMeters = ConvertToMeters(c, Unit);
 
 
-            if ((aMeters <= 0) || (bMeters <= 0) || (c <= 0))
+            if ((aMeters <= 0) || (bMeters <= 0) || (cMeters <= 0))
             {
                 throw new ArgumentOutOfRangeException("The sizes of the box can not have negative values!");
             }
@@ -63,11 +63,11 @@ namespace PudelkoLibrary
             switch (unit)
             {
                 case UnitOfMeasure.meter:
-                    return Math.Round(value, 3);
-                case UnitOfMeasure.centimeter:
-                    return Math.Truncate(value * 100.0) / 100.0;
-                case UnitOfMeasure.milimeter:
                     return Math.Truncate(value * 1000.0) / 1000.0;
+                case UnitOfMeasure.centimeter:
+                    return Math.Truncate(value / 100 * 1000) / 100;
+                case UnitOfMeasure.milimeter:
+                    return Math.Truncate(value / 1000 * 10000) / 1000;
                 default:
                     throw new ArgumentException("Please provide correct unit of measure");
             }
