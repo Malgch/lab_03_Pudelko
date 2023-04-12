@@ -55,6 +55,18 @@ namespace PudelkoLibrary
             {
                 throw new ArgumentOutOfRangeException("The size of box can not be greater than 10 meters!");
             }
+
+            switch (unit)
+            {
+                case UnitOfMeasure.centimeter:
+                case UnitOfMeasure.milimeter:
+                    {
+                        this.a = aMeters;
+                        this.b = bMeters;
+                        this.c = cMeters;
+                        return;
+                    }                    
+            }
         }
 
 
@@ -65,9 +77,9 @@ namespace PudelkoLibrary
                 case UnitOfMeasure.meter:
                     return Math.Truncate(value * 1000.0) / 1000.0;
                 case UnitOfMeasure.centimeter:
-                    return Math.Truncate(value / 100 * 1000) / 100;
+                    return Math.Truncate(value / 100 * 1000) / 1000;
                 case UnitOfMeasure.milimeter:
-                    return Math.Truncate(value / 1000 * 10000) / 1000;
+                    return value / 1000;
                 default:
                     throw new ArgumentException("Please provide correct unit of measure");
             }
