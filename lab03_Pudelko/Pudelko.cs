@@ -65,7 +65,7 @@ namespace PudelkoLibrary
                         this.b = bMeters;
                         this.c = cMeters;
                         return;
-                    }                    
+                    }
             }
         }
 
@@ -79,7 +79,7 @@ namespace PudelkoLibrary
                 case UnitOfMeasure.centimeter:
                     return Math.Truncate(value / 100 * 1000) / 1000;
                 case UnitOfMeasure.milimeter:
-                    return value / 1000;
+                    return Math.Truncate(value) / 1000;
                 default:
                     throw new ArgumentException("Please provide correct unit of measure");
             }

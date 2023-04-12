@@ -1,13 +1,13 @@
 ﻿using PudelkoLibrary;
 using System.Numerics;
 
-Pudelko p = new Pudelko();
+//Pudelko p = new Pudelko(0,1,1, PudelkoLibrary.Enums.UnitOfMeasure.milimeter);
 
-Console.WriteLine(p.ToString());
+//Console.WriteLine(p.ToString());
 
-double a = 1; //mm
+double a = 1234.6442; //mm
 
-//Console.WriteLine(Math.Truncate(a *100) / 10000); //na m
+Console.WriteLine((Math.Truncate(a)/1000)); //na m
 
 double b = Math.Truncate(a / 1000); //mm na m
 Console.WriteLine(b);
