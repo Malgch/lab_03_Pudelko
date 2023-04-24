@@ -34,19 +34,50 @@ namespace PudelkoLibrary
         }
 
 
-        public Pudelko(double a = 0.1, double b = 0.1, double c = 0.1, UnitOfMeasure unit = UnitOfMeasure.meter)
+        public Pudelko(double? a = null, double? b = null , double? c = null , UnitOfMeasure unit = UnitOfMeasure.meter)
         {
-            this.a = a;
-            this.b = b;
-            this.c = c;
-            Unit = unit;
+            Unit = unit; 
+            if (a is null || b is null || c is null) //sets default values for null parameters depending on unit of measurement
+            {
+                switch (unit)
+                {
+                    case UnitOfMeasure.meter:
+                        {
+                            this.a = a ?? 0.1;
+                            this.b = b ?? 0.1;
+                            this.c = c ?? 0.1;
+                            break;
+                        }
+                    case UnitOfMeasure.centimeter:
+                        {
+
+                            this.a = a ?? 10;
+                            this.b = b ?? 10;
+                            this.c = c ?? 10;
+                            break;
+                        }
+                    case UnitOfMeasure.milimeter:
+                        {
+                            this.a = a ?? 100;
+                            this.b = b ?? 100;
+                            this.c = c ?? 100;
+                            break;
+                        }
+                }
+            }
+            else
+            {
+                this.a = (double)a;
+                this.b = (double)b;
+                this.c = (double)c;
+            }
 
             //conversion
-            double aMeters = ConvertToMeters(a, Unit);
-            double bMeters = ConvertToMeters(b, Unit);
-            double cMeters = ConvertToMeters(c, Unit);
+            double aMeters = ConvertToMeters(this.a, Unit);
+            double bMeters = ConvertToMeters(this.b, Unit);
+            double cMeters = ConvertToMeters(this.c, Unit);
 
-
+            //exceptions
             if ((aMeters <= 0) || (bMeters <= 0) || (cMeters <= 0))
             {
                 throw new ArgumentOutOfRangeException("The sizes of the box can not have negative values!");
@@ -56,6 +87,7 @@ namespace PudelkoLibrary
                 throw new ArgumentOutOfRangeException("The size of box can not be greater than 10 meters!");
             }
 
+            //assignment of converted-to-meters value
             switch (unit)
             {
                 case UnitOfMeasure.centimeter:
@@ -68,7 +100,6 @@ namespace PudelkoLibrary
                     }
             }
         }
-
 
         private double ConvertToMeters(double value, UnitOfMeasure unit)
         {
