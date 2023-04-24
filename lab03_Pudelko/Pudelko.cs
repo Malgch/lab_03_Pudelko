@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -116,14 +117,28 @@ namespace PudelkoLibrary
             }
         }
 
-        public override string ToString()
+        public override string ToString() //meters
         {
-            return $"{A} {Unit} \u00d7  {B} {Unit} \u00d7 {C} {Unit} ";
+            string defaultEnumMeters = "m";
+            return $"{A.ToString("0.000")} {defaultEnumMeters} \u00d7 {B.ToString("0.000")} {defaultEnumMeters} \u00d7 {C.ToString("0.000")} {defaultEnumMeters}";
         }
 
         public string ToString(string format)
         {
-            return format;
+            if (format == "cm")
+            {
+                return $"{A * 100:0.0} cm \u00d7 {B * 100:0.0} cm \u00d7 {C * 100:0.0} cm";
+            }
+            else if (format == "m" || format is null)
+            {
+                return $"{A.ToString("0.000")} m \u00d7 {B.ToString("0.000")} m \u00d7 {C.ToString("0.000")} m";
+            }
+            else if (format == "mm")
+            {
+                return $"{A * 1000:0} mm \u00d7 {B * 1000:0} mm \u00d7 {C * 1000:0} mm";
+            }
+            else
+                throw new FormatException("wrong format");
         }
 
 
