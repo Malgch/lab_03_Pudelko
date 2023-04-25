@@ -449,6 +449,27 @@ namespace UnitTests
 
         #region Pole, Objêtoœæ ===================================
         // ToDo
+        [DataTestMethod, TestCategory("Volume")]
+        [DataRow(5, 2.0, 1.0, 10)]
+        [DataRow(0.001, 7.123, 1.123, 0.007999129)]
+        [DataRow(1.91, 2.299, 0.1, 0.439109)]
+        [DataRow(0.001, 0.001, 0.001, 0.000000001)]
+        public void Property_Volume_meters(double a, double b, double c, double expectedVolume)
+        {
+            Pudelko p = new Pudelko(a, b, c, unit: UnitOfMeasure.meter);
+
+            Assert.AreEqual(p.Volume, expectedVolume);
+        }
+
+        [DataTestMethod, TestCategory("Volume")]
+        [DataRow(50, 20, 10, 0.01)]
+        [DataRow(10, 10, 10, 0.001)]
+        public void Property_Volume_centimeters(double a, double b, double c, double expectedVolume)
+        {
+            Pudelko p = new Pudelko(a, b, c, unit: UnitOfMeasure.centimeter);
+
+            Assert.AreEqual(expectedVolume, p.Volume);
+        }
 
         #endregion
 
@@ -461,51 +482,51 @@ namespace UnitTests
         #endregion
 
         #region Conversions =====================================
-/*        [TestMethod]
-        public void ExplicitConversion_ToDoubleArray_AsMeters()
-        {
-            var p = new Pudelko(1, 2.1, 3.231);
-            double[] tab = (double[])p;
-            Assert.AreEqual(3, tab.Length);
-            Assert.AreEqual(p.a, tab[0]);
-            Assert.AreEqual(p.b, tab[1]);
-            Assert.AreEqual(p.c, tab[2]);
-        }*/
+        /*        [TestMethod]
+                public void ExplicitConversion_ToDoubleArray_AsMeters()
+                {
+                    var p = new Pudelko(1, 2.1, 3.231);
+                    double[] tab = (double[])p;
+                    Assert.AreEqual(3, tab.Length);
+                    Assert.AreEqual(p.a, tab[0]);
+                    Assert.AreEqual(p.b, tab[1]);
+                    Assert.AreEqual(p.c, tab[2]);
+                }*/
 
-/*        [TestMethod]
-        public void ImplicitConversion_FromAalueTuple_As_Pudelko_InMilimeters()
-        {
-            var (a, b, c) = (2500, 9321, 100); // in milimeters, ValueTuple
-            Pudelko p = (a, b, c);
-            Assert.AreEqual((int)(p.a * 1000), a);
-            Assert.AreEqual((int)(p.b * 1000), b);
-            Assert.AreEqual((int)(p.c * 1000), c);
-        }*/
+        /*        [TestMethod]
+                public void ImplicitConversion_FromAalueTuple_As_Pudelko_InMilimeters()
+                {
+                    var (a, b, c) = (2500, 9321, 100); // in milimeters, ValueTuple
+                    Pudelko p = (a, b, c);
+                    Assert.AreEqual((int)(p.a * 1000), a);
+                    Assert.AreEqual((int)(p.b * 1000), b);
+                    Assert.AreEqual((int)(p.c * 1000), c);
+                }*/
 
         #endregion
 
         #region Indexer, enumeration ============================
-/*        [TestMethod]
-        public void Indexer_ReadFrom()
-        {
-            var p = new Pudelko(1, 2.1, 3.231);
-            Assert.AreEqual(p.a, p[0]);
-            Assert.AreEqual(p.b, p[1]);
-            Assert.AreEqual(p.c, p[2]);
-        }
+        /*        [TestMethod]
+                public void Indexer_ReadFrom()
+                {
+                    var p = new Pudelko(1, 2.1, 3.231);
+                    Assert.AreEqual(p.a, p[0]);
+                    Assert.AreEqual(p.b, p[1]);
+                    Assert.AreEqual(p.c, p[2]);
+                }
 
-        [TestMethod]
-        public void ForEach_Test()
-        {
-            var p = new Pudelko(1, 2.1, 3.231);
-            var tab = new[] { p.a, p.b, p.c };
-            int i = 0;
-            foreach (double x in p)
-            {
-                Assert.AreEqual(x, tab[i]);
-                i++;
-            }
-        }*/
+                [TestMethod]
+                public void ForEach_Test()
+                {
+                    var p = new Pudelko(1, 2.1, 3.231);
+                    var tab = new[] { p.a, p.b, p.c };
+                    int i = 0;
+                    foreach (double x in p)
+                    {
+                        Assert.AreEqual(x, tab[i]);
+                        i++;
+                    }
+                }*/
 
         #endregion
 

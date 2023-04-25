@@ -1,6 +1,7 @@
 ﻿using PudelkoLibrary.Enums;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 namespace PudelkoLibrary
 {
 
-    public class Pudelko
+    public class Pudelko 
     {
 
         public double a;
@@ -18,23 +19,23 @@ namespace PudelkoLibrary
         public UnitOfMeasure Unit { get; init; }
         public double A
         {
-            get => ConvertToMeters(a, Unit);
-            set { a = value; }
+            get { return a; }
+            set { a = ConvertToMeters(value, Unit); }
         }
 
         // public double a { get; init; }
         public double B
         {
-            get { return ConvertToMeters(b, Unit); }
-            set { a = value; }
+            get { return b; }
+            set { b = ConvertToMeters(value, Unit); }
         }
         public double C
         {
-            get { return ConvertToMeters(c, Unit); }
-            set { a = value; }
+            get { return c; }
+            set { c = ConvertToMeters(value, Unit); }
         }
 
-
+        #region Constructor
         public Pudelko(double? a = null, double? b = null , double? c = null , UnitOfMeasure unit = UnitOfMeasure.meter)
         {
             Unit = unit; 
@@ -101,6 +102,8 @@ namespace PudelkoLibrary
                     }
             }
         }
+        #endregion
+
 
         private double ConvertToMeters(double value, UnitOfMeasure unit)
         {
@@ -125,15 +128,17 @@ namespace PudelkoLibrary
 
         public string ToString(string format)
         {
-            if (format == "cm")
+            if (string.IsNullOrEmpty(format)) format = "m";
+
+            if (format.ToLower() == "cm")
             {
                 return $"{A * 100:0.0} cm \u00d7 {B * 100:0.0} cm \u00d7 {C * 100:0.0} cm";
             }
-            else if (format == "m" || format is null)
+            else if (format.ToLower() == "m")
             {
                 return $"{A.ToString("0.000")} m \u00d7 {B.ToString("0.000")} m \u00d7 {C.ToString("0.000")} m";
             }
-            else if (format == "mm")
+            else if (format.ToLower() == "mm")
             {
                 return $"{A * 1000:0} mm \u00d7 {B * 1000:0} mm \u00d7 {C * 1000:0} mm";
             }
@@ -142,6 +147,10 @@ namespace PudelkoLibrary
         }
 
 
+        public double Volume
+        {
+            get { return Math.Round(A * B * C, 9); }
+        }
 
     }
 }
