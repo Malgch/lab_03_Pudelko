@@ -461,7 +461,7 @@ namespace UnitTests
             Assert.AreEqual(p.Volume, expectedVolume);
         }
 
-        [DataTestMethod, TestCategory("Volume")]
+        [DataTestMethod, TestCategory("Volume in centimeters")]
         [DataRow(50, 20, 10, 0.01)]
         [DataRow(10, 10, 10, 0.001)]
         public void Property_Volume_centimeters(double a, double b, double c, double expectedVolume)
@@ -471,10 +471,39 @@ namespace UnitTests
             Assert.AreEqual(expectedVolume, p.Volume);
         }
 
+        [DataTestMethod, TestCategory("Volume in milimeters")]
+        [DataRow(500, 100, 100, 0.005)]
+        [DataRow(1234, 1000, 100, 0.1234)]
+        public void Property_Volume_milimeters(double a, double b, double c, double expectedVolume)
+        {
+            Pudelko p = new Pudelko(a, b, c, unit: UnitOfMeasure.milimeter);
+
+            Assert.AreEqual(expectedVolume, p.Volume);
+        }
+
+        [DataTestMethod, TestCategory("Area in milimeters")]
+        [DataRow(5, 2, 1, 16)]
+        [DataRow(1.234, 1.567, 1.891, 9.384)]
+        public void Property_Area_Meters(double a, double b, double c, double expectedArea)
+        {
+            Pudelko p = new Pudelko(a, b, c, unit: UnitOfMeasure.meter);
+
+            Assert.AreEqual(expectedArea, p.Area);
+        }
+
         #endregion
 
         #region Equals ===========================================
         // ToDo
+        [DataTestMethod, TestCategory("Area in milimeters")]
+        [DataRow(5, 2, 1, 5, 2, 1, true)]
+        public void AreEquals(double a, double b, double c, double d, double e, double f, bool areEquals)
+        {
+            Pudelko p = new Pudelko(a, b, c, unit: UnitOfMeasure.meter);
+            Pudelko box = new Pudelko(d, e, f, unit: UnitOfMeasure.meter);
+
+            Assert.AreEqual(areEquals, p.Equals(box));
+        }
         #endregion
 
         #region Operators overloading ===========================

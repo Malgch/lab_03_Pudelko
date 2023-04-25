@@ -152,5 +152,21 @@ namespace PudelkoLibrary
             get { return Math.Round(A * B * C, 9); }
         }
 
+        public double Area
+        {
+            get { return Math.Round(2 * A + 2 * B + 2 * C, 6); }
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is null) return false;
+            if (obj is not Pudelko) return false;
+
+            Pudelko OtherPudelko = (Pudelko)obj;
+            double firstBox = Math.Max(Math.Max(A, B), C);
+            double otherBox = Math.Max(Math.Max(OtherPudelko.A, OtherPudelko.B), OtherPudelko.C);
+            return firstBox == otherBox;
+        }
+        public override int GetHashCode() => HashCode.Combine(A, B, C);
     }
 }
