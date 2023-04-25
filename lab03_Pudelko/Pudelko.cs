@@ -166,7 +166,20 @@ namespace PudelkoLibrary
             double firstBox = Math.Max(Math.Max(A, B), C);
             double otherBox = Math.Max(Math.Max(OtherPudelko.A, OtherPudelko.B), OtherPudelko.C);
             return firstBox == otherBox;
+
         }
         public override int GetHashCode() => HashCode.Combine(A, B, C);
+
+        public static bool operator ==(Pudelko? boxA, Pudelko? boxB)
+        {
+            if (boxA is null && boxB is null) return true;
+            if (boxA is null) return false;
+
+            return boxA.Equals(boxB);
+        }
+
+        public static bool operator !=(Pudelko? boxA, Pudelko? boxB) => !(boxA == boxB);
+
+
     }
 }

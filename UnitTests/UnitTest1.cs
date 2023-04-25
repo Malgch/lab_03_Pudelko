@@ -495,12 +495,44 @@ namespace UnitTests
 
         #region Equals ===========================================
         // ToDo
-        [DataTestMethod, TestCategory("Area in milimeters")]
+        [DataTestMethod, TestCategory("AreEquals in meters")]
         [DataRow(5, 2, 1, 5, 2, 1, true)]
+        [DataRow(5, 2, 1, 1, 5, 2, true)]
+        [DataRow(5, 2, 1, 1, 5, 2, true)]
+        [DataRow(5, 2, 1, 9, 2, 1, false)]
+        [DataRow(5, 2, 1, 9, 0.5, 0.1, false)]
+        [DataRow(0.01, 0.01, 0.01, 0.01, 0.01, 0.01, true)]
         public void AreEquals(double a, double b, double c, double d, double e, double f, bool areEquals)
         {
             Pudelko p = new Pudelko(a, b, c, unit: UnitOfMeasure.meter);
             Pudelko box = new Pudelko(d, e, f, unit: UnitOfMeasure.meter);
+
+            Assert.AreEqual(areEquals, p.Equals(box));
+        }
+
+        [DataTestMethod, TestCategory("AreEquals in meters and centimeters")]
+        [DataRow(5, 2, 1, 500, 200, 100, true)]
+        [DataRow(5, 2, 1, 100, 500, 200, true)]
+        [DataRow(5, 2, 1, 100, 500, 200, true)]
+        [DataRow(5, 2, 1, 900, 200, 100, false)]
+        [DataRow(5, 2, 1, 900, 50, 10, false)]
+        [DataRow(0.01, 0.01, 0.01, 1, 1, 1, true)]
+        public void AreEquals_Centimeters(double a, double b, double c, double d, double e, double f, bool areEquals)
+        {
+            Pudelko p = new Pudelko(a, b, c, unit: UnitOfMeasure.meter);
+            Pudelko box = new Pudelko(d, e, f, unit: UnitOfMeasure.centimeter);
+
+            Assert.AreEqual(areEquals, p.Equals(box));
+        }
+
+        [DataTestMethod, TestCategory("AreEquals in cm and mm")]
+        [DataRow(50, 20, 10, 500, 200, 100, true)]
+        [DataRow(5, 2, 1, 900, 200, 100, false)]
+
+        public void AreEquals_Centimeters_milimeters(double a, double b, double c, double d, double e, double f, bool areEquals)
+        {
+            Pudelko p = new Pudelko(a, b, c, unit: UnitOfMeasure.centimeter);
+            Pudelko box = new Pudelko(d, e, f, unit: UnitOfMeasure.milimeter);
 
             Assert.AreEqual(areEquals, p.Equals(box));
         }
