@@ -561,26 +561,26 @@ namespace UnitTests
         #endregion
 
         #region Conversions =====================================
-        /*        [TestMethod]
-                public void ExplicitConversion_ToDoubleArray_AsMeters()
-                {
-                    var p = new Pudelko(1, 2.1, 3.231);
-                    double[] tab = (double[])p;
-                    Assert.AreEqual(3, tab.Length);
-                    Assert.AreEqual(p.a, tab[0]);
-                    Assert.AreEqual(p.b, tab[1]);
-                    Assert.AreEqual(p.c, tab[2]);
-                }*/
+        [TestMethod]
+        public void ExplicitConversion_ToDoubleArray_AsMeters()
+        {
+            var p = new Pudelko(1, 2.1, 3.231);
+            double[] tab = (double[])p;
+            Assert.AreEqual(3, tab.Length);
+            Assert.AreEqual(p.a, tab[0]);
+            Assert.AreEqual(p.b, tab[1]);
+            Assert.AreEqual(p.c, tab[2]);
+        }
 
-        /*        [TestMethod]
-                public void ImplicitConversion_FromAalueTuple_As_Pudelko_InMilimeters()
-                {
-                    var (a, b, c) = (2500, 9321, 100); // in milimeters, ValueTuple
-                    Pudelko p = (a, b, c);
-                    Assert.AreEqual((int)(p.a * 1000), a);
-                    Assert.AreEqual((int)(p.b * 1000), b);
-                    Assert.AreEqual((int)(p.c * 1000), c);
-                }*/
+        [TestMethod]
+        public void ImplicitConversion_FromAalueTuple_As_Pudelko_InMilimeters()
+        {
+            var (a, b, c) = (2500, 9321, 100); // in milimeters, ValueTuple
+            Pudelko p = (a, b, c);
+            Assert.AreEqual((int)(p.a * 1000), a);
+            Assert.AreEqual((int)(p.b * 1000), b);
+            Assert.AreEqual((int)(p.c * 1000), c);
+        }
 
         #endregion
 

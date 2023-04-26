@@ -193,5 +193,18 @@ namespace PudelkoLibrary
             double lenght = box1Dimensions[0] + box2Dimensions[0];
             return new Pudelko(height, width, lenght);
         }
+
+        public static explicit operator double[](Pudelko box)
+        {
+            double[] converted = { (double)box.A, (double)box.B, (double)box.C };
+            return converted;
+        }
+
+        public static implicit operator Pudelko((int a, int b, int c) dimensions) //to be tested
+        {
+            return new Pudelko { A = ((double)dimensions.a / 1000), B = (double)dimensions.b / 1000, C = (double)dimensions.c / 1000 , Unit = UnitOfMeasure.milimeter };
+        }
+
+
     }
 }
