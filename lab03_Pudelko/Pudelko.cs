@@ -20,17 +20,17 @@ namespace PudelkoLibrary
         public double A
         {
             get { return a; }
-            set { a = ConvertToMeters(value, Unit); }
+            init { a = ConvertToMeters(value, Unit); }
         }
         public double B
         {
             get { return b; }
-            set { b = ConvertToMeters(value, Unit); }
+            init { b = ConvertToMeters(value, Unit); }
         }
         public double C
         {
             get { return c; }
-            set { c = ConvertToMeters(value, Unit); }
+            init { c = ConvertToMeters(value, Unit); }
         }
 
         #region Constructor
@@ -218,7 +218,7 @@ namespace PudelkoLibrary
             }
         }
 
-
+        #region IEnumerator interface
         IEnumerator<double> IEnumerable<double>.GetEnumerator()
         {
             yield return A;
@@ -230,5 +230,49 @@ namespace PudelkoLibrary
         {
             return (IEnumerator)this;
         }
+        #endregion
+
+        //Parsing method
+
+        public static Pudelko Parse(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                throw new ArgumentException("The input string can not be empty.");
+
+            var values = input.Split(' ', '\u00d7');
+
+            if (values.Length != 6)
+                throw new ArgumentException("Input string is not in correct format");
+
+
+
+
+            return new Pudelko(1, 2, 3);
+        }
+
+
+        //P(2.5, 9.321, 0.1) == P.Parse("2.500 m × 9.321 m × 0.100 m")
+
+
+        /*        public string ToString(string format)
+                {
+        P(2.5, 9.321, 0.1) == P.Parse("2.500 m × 9.321 m × 0.100 m")
+                    if (string.IsNullOrEmpty(format)) format = "m";
+
+                    if (format.ToLower() == "cm")
+                    {
+                        return $"{A * 100:0.0} cm \u00d7 {B * 100:0.0} cm \u00d7 {C * 100:0.0} cm";
+                    }
+                    else if (format.ToLower() == "m")
+                    {
+                        return $"{A.ToString("0.000")} m \u00d7 {B.ToString("0.000")} m \u00d7 {C.ToString("0.000")} m";
+                    }
+                    else if (format.ToLower() == "mm")
+                    {
+                        return $"{A * 1000:0} mm \u00d7 {B * 1000:0} mm \u00d7 {C * 1000:0} mm";
+                    }
+                    else
+                        throw new FormatException("wrong format");
+                }*/
     }
 }
