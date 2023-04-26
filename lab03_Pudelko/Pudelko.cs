@@ -180,6 +180,18 @@ namespace PudelkoLibrary
 
         public static bool operator !=(Pudelko? boxA, Pudelko? boxB) => !(boxA == boxB);
 
+        public static Pudelko operator +(Pudelko boxA, Pudelko boxB)
+        {
+            double[] box1Dimensions = { boxA.A, boxA.B, boxA.C };
+            double[] box2Dimensions = { boxB.A, boxB.B, boxB.C };
 
+            Array.Sort(box1Dimensions);
+            Array.Sort(box2Dimensions);
+
+            double height = Math.Max(box1Dimensions[2], box2Dimensions[2]);
+            double width = box1Dimensions[1] + box2Dimensions[1];
+            double lenght = box1Dimensions[0] + box2Dimensions[0];
+            return new Pudelko(height, width, lenght);
+        }
     }
 }

@@ -538,6 +538,24 @@ namespace UnitTests
         }
         #endregion
 
+        #region Adding boxes
+
+        [DataTestMethod, TestCategory("AreEquals in cm and mm")]
+        [DataRow(50, 20, 60, 70, 40, 30, 70, 90, 50, true)]
+        [DataRow(20, 50, 60, 70, 40, 30, 70, 90, 50, true)]
+        [DataRow(10, 10, 20, 10, 10, 20, 20, 20, 20, true)]
+
+        public void Boxes_addition(double a, double b, double c, double d, double e, double f, double l, double w, double h, bool areEquals)
+        {
+            Pudelko p = new Pudelko(a, b, c, unit: UnitOfMeasure.centimeter);
+            Pudelko box = new Pudelko(d, e, f, unit: UnitOfMeasure.centimeter);
+            Pudelko AddedBox = new Pudelko(l, w, h, unit:UnitOfMeasure.centimeter);
+
+            Assert.AreEqual(areEquals, AddedBox.Equals(p + box));
+        }
+
+        #endregion
+
         #region Operators overloading ===========================
         // ToDo
         #endregion
