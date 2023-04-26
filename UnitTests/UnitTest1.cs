@@ -585,27 +585,27 @@ namespace UnitTests
         #endregion
 
         #region Indexer, enumeration ============================
-        /*        [TestMethod]
-                public void Indexer_ReadFrom()
-                {
-                    var p = new Pudelko(1, 2.1, 3.231);
-                    Assert.AreEqual(p.a, p[0]);
-                    Assert.AreEqual(p.b, p[1]);
-                    Assert.AreEqual(p.c, p[2]);
-                }
+        [TestMethod]
+        public void Indexer_ReadFrom()
+        {
+            var p = new Pudelko(1, 2.1, 3.231);
+            Assert.AreEqual(p.a, p[0]);
+            Assert.AreEqual(p.b, p[1]);
+            Assert.AreEqual(p.c, p[2]);
+        }
 
-                [TestMethod]
-                public void ForEach_Test()
-                {
-                    var p = new Pudelko(1, 2.1, 3.231);
-                    var tab = new[] { p.a, p.b, p.c };
-                    int i = 0;
-                    foreach (double x in p)
-                    {
-                        Assert.AreEqual(x, tab[i]);
-                        i++;
-                    }
-                }*/
+        [TestMethod]
+        public void ForEach_Test()
+        {
+            var p = new Pudelko(1, 2.1, 3.231);
+            var tab = new[] { p.a, p.b, p.c };
+            int i = 0;
+            foreach (double x in p)
+            {
+                Assert.AreEqual(x, tab[i]);
+                i++;
+            }
+        }
 
         #endregion
 

@@ -1,18 +1,18 @@
 ﻿using PudelkoLibrary.Enums;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PudelkoLibrary
 {
-
-    public class Pudelko 
+    public class Pudelko : IEnumerable<double>
     {
-
         public double a;
         public double b;
         public double c;
@@ -22,8 +22,6 @@ namespace PudelkoLibrary
             get { return a; }
             set { a = ConvertToMeters(value, Unit); }
         }
-
-        // public double a { get; init; }
         public double B
         {
             get { return b; }
@@ -36,9 +34,9 @@ namespace PudelkoLibrary
         }
 
         #region Constructor
-        public Pudelko(double? a = null, double? b = null , double? c = null , UnitOfMeasure unit = UnitOfMeasure.meter)
+        public Pudelko(double? a = null, double? b = null, double? c = null, UnitOfMeasure unit = UnitOfMeasure.meter)
         {
-            Unit = unit; 
+            Unit = unit;
             if (a is null || b is null || c is null) //sets default values for null parameters depending on unit of measurement
             {
                 switch (unit)
@@ -104,7 +102,6 @@ namespace PudelkoLibrary
         }
         #endregion
 
-
         private double ConvertToMeters(double value, UnitOfMeasure unit)
         {
             switch (unit)
@@ -166,7 +163,6 @@ namespace PudelkoLibrary
             double firstBox = Math.Max(Math.Max(A, B), C);
             double otherBox = Math.Max(Math.Max(OtherPudelko.A, OtherPudelko.B), OtherPudelko.C);
             return firstBox == otherBox;
-
         }
         public override int GetHashCode() => HashCode.Combine(A, B, C);
 
@@ -194,7 +190,7 @@ namespace PudelkoLibrary
             return new Pudelko(height, width, lenght);
         }
 
-        public static explicit operator double[](Pudelko box)
+        public static explicit operator double[](Pudelko box) //converter to double array
         {
             double[] converted = { (double)box.A, (double)box.B, (double)box.C };
             return converted;
@@ -202,9 +198,37 @@ namespace PudelkoLibrary
 
         public static implicit operator Pudelko((int a, int b, int c) dimensions) //to be tested
         {
-            return new Pudelko { A = ((double)dimensions.a / 1000), B = (double)dimensions.b / 1000, C = (double)dimensions.c / 1000 , Unit = UnitOfMeasure.milimeter };
+            return new Pudelko { A = ((double)dimensions.a / 1000), B = (double)dimensions.b / 1000, C = (double)dimensions.c / 1000, Unit = UnitOfMeasure.milimeter };
+        }
+
+        public double this[int index]
+        {
+            get {
+                switch (index)
+                {
+                    case 0:
+                        return A;
+                    case 1:
+                        return B;
+                    case 2:
+                        return C;
+                    default:
+                        throw new IndexOutOfRangeException();
+                }
+            }
         }
 
 
+        IEnumerator<double> IEnumerable<double>.GetEnumerator()
+        {
+            yield return A;
+            yield return B;
+            yield return C;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return (IEnumerator)this;
+        }
     }
 }
