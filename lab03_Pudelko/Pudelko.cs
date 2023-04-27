@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PudelkoLibrary
 {
-    public class Pudelko : IEnumerable<double>
+    public sealed class Pudelko : IFormattable, IEquatable<Pudelko>, IEnumerable<double>
     {
         public double a;
         public double b;
@@ -123,24 +123,26 @@ namespace PudelkoLibrary
             return $"{A.ToString("0.000")} {defaultEnumMeters} \u00d7 {B.ToString("0.000")} {defaultEnumMeters} \u00d7 {C.ToString("0.000")} {defaultEnumMeters}";
         }
 
-        public string ToString(string format)
+        public string ToString(string? format, IFormatProvider? provider)
         {
             if (string.IsNullOrEmpty(format)) format = "m";
+            if (provider is null) provider = CultureInfo.CurrentCulture;
 
             if (format.ToLower() == "cm")
-            {
-                return $"{A * 100:0.0} cm \u00d7 {B * 100:0.0} cm \u00d7 {C * 100:0.0} cm";
-            }
+               return $"{A * 100:0.0} cm \u00d7 {B * 100:0.0} cm \u00d7 {C * 100:0.0} cm";
+            
             else if (format.ToLower() == "m")
-            {
                 return $"{A.ToString("0.000")} m \u00d7 {B.ToString("0.000")} m \u00d7 {C.ToString("0.000")} m";
-            }
-            else if (format.ToLower() == "mm")
-            {
+           
+            else if (format.ToLower() == "mm")           
                 return $"{A * 1000:0} mm \u00d7 {B * 1000:0} mm \u00d7 {C * 1000:0} mm";
-            }
+           
             else
                 throw new FormatException("wrong format");
+        }
+        public string ToString(string format)
+        {
+            return this.ToString(format, CultureInfo.CurrentCulture);
         }
 
 
@@ -153,16 +155,22 @@ namespace PudelkoLibrary
         {
             get { return Math.Round(2 * A + 2 * B + 2 * C, 6); }
         }
+        public bool Equals(Pudelko? other)
+        {
+            if (other is null) return false;
+            if (ReferenceEquals(this, other)) return true;
 
+            Pudelko OtherPudelko = (Pudelko)other;
+            double firstBox = Math.Max(Math.Max(A, B), C);
+            double otherBox = Math.Max(Math.Max(OtherPudelko.A, OtherPudelko.B), OtherPudelko.C);
+            return firstBox == otherBox;
+        }
         public override bool Equals(object? obj)
         {
             if (obj is null) return false;
             if (obj is not Pudelko) return false;
 
-            Pudelko OtherPudelko = (Pudelko)obj;
-            double firstBox = Math.Max(Math.Max(A, B), C);
-            double otherBox = Math.Max(Math.Max(OtherPudelko.A, OtherPudelko.B), OtherPudelko.C);
-            return firstBox == otherBox;
+            return Equals(obj as Pudelko);
         }
         public override int GetHashCode() => HashCode.Combine(A, B, C);
 
@@ -196,7 +204,7 @@ namespace PudelkoLibrary
             return converted;
         }
 
-        public static implicit operator Pudelko((int a, int b, int c) dimensions) //to be tested
+        public static implicit operator Pudelko((int a, int b, int c) dimensions)
         {
             return new Pudelko { A = ((double)dimensions.a / 1000), B = (double)dimensions.b / 1000, C = (double)dimensions.c / 1000, Unit = UnitOfMeasure.milimeter };
         }
@@ -225,54 +233,43 @@ namespace PudelkoLibrary
             yield return B;
             yield return C;
         }
-
-        IEnumerator IEnumerable.GetEnumerator()
+        public IEnumerator GetEnumerator()
         {
             return (IEnumerator)this;
         }
+
         #endregion
 
         //Parsing method
 
         public static Pudelko Parse(string input)
         {
-            if (string.IsNullOrEmpty(input))
-                throw new ArgumentException("The input string can not be empty.");
+            CultureInfo.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
+            if (string.IsNullOrEmpty(input)) throw new ArgumentException("The input string cannot be empty.");
 
-            var values = input.Split(' ', '\u00d7');
+            string[] values = input.Split(" ");
+            if (values.Length != 8) throw new ArgumentException("Input string is not in correct format");
 
-            if (values.Length != 6)
-                throw new ArgumentException("Input string is not in correct format");
+            double a, b, c;
 
+            double.TryParse(values[0].Trim(), out a);
+            double.TryParse(values[3].Trim(), out b);
+            double.TryParse(values[6].Trim(), out c);
 
+            UnitOfMeasure unit;
+            if (values[1].Trim() == "m")
+            {
+                unit = UnitOfMeasure.meter;
+            }
+            else if (values[1].Trim() == "cm")
+                unit = UnitOfMeasure.centimeter;
+            else if (values[1].Trim() == "mm")
+                unit = UnitOfMeasure.milimeter;
+            else
+                throw new ArgumentException("The input string is not correct format last throw");
 
-
-            return new Pudelko(1, 2, 3);
+            return new Pudelko(a, b, c, unit);
+           
         }
-
-
-        //P(2.5, 9.321, 0.1) == P.Parse("2.500 m × 9.321 m × 0.100 m")
-
-
-        /*        public string ToString(string format)
-                {
-        P(2.5, 9.321, 0.1) == P.Parse("2.500 m × 9.321 m × 0.100 m")
-                    if (string.IsNullOrEmpty(format)) format = "m";
-
-                    if (format.ToLower() == "cm")
-                    {
-                        return $"{A * 100:0.0} cm \u00d7 {B * 100:0.0} cm \u00d7 {C * 100:0.0} cm";
-                    }
-                    else if (format.ToLower() == "m")
-                    {
-                        return $"{A.ToString("0.000")} m \u00d7 {B.ToString("0.000")} m \u00d7 {C.ToString("0.000")} m";
-                    }
-                    else if (format.ToLower() == "mm")
-                    {
-                        return $"{A * 1000:0} mm \u00d7 {B * 1000:0} mm \u00d7 {C * 1000:0} mm";
-                    }
-                    else
-                        throw new FormatException("wrong format");
-                }*/
     }
 }

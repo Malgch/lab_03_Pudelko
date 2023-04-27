@@ -610,6 +610,27 @@ namespace UnitTests
         #endregion
 
         #region Parsing =========================================
+        [DataTestMethod, TestCategory("Parsing string meters")]
+        [DataRow("2.500 m × 9.321 m × 1.0 m", 2.500, 9.321, 1.0, UnitOfMeasure.meter)]
+
+        public void ParsingMethod(string input, double expectedB, double expectedC, double expectedD, UnitOfMeasure unit)
+        {
+            Pudelko expectedPudelko = new Pudelko(expectedB, expectedC, expectedD, unit);
+            Pudelko actualPudelko = Pudelko.Parse(input);
+
+            Assert.AreEqual(expectedPudelko, actualPudelko);
+        }
+
+        [DataTestMethod, TestCategory("Parsing string centimeters")]
+        [DataRow("2.500 cm × 9.321 cm × 10 cm", 0.025, 0.093, 0.1, UnitOfMeasure.meter)]
+
+        public void ParsingMethod_cm(string input, double expectedB, double expectedC, double expectedD, UnitOfMeasure unit)
+        {
+            Pudelko expectedPudelko = new Pudelko(expectedB, expectedC, expectedD, unit);
+            Pudelko actualPudelko = Pudelko.Parse(input);
+
+            Assert.AreEqual(expectedPudelko, actualPudelko);
+        }
 
         #endregion
 
