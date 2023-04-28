@@ -611,7 +611,7 @@ namespace UnitTests
 
         #region Parsing =========================================
         [DataTestMethod, TestCategory("Parsing string meters")]
-        [DataRow("2.500 m × 9.321 m × 1.0 m", 2.500, 9.321, 1.0, UnitOfMeasure.meter)]
+        [DataRow("2.500 m × 9.321 m × 0.100 m", 2.500, 9.321, 0.1, UnitOfMeasure.meter)]
 
         public void ParsingMethod(string input, double expectedB, double expectedC, double expectedD, UnitOfMeasure unit)
         {

@@ -145,7 +145,6 @@ namespace PudelkoLibrary
             return this.ToString(format, CultureInfo.CurrentCulture);
         }
 
-
         public double Volume
         {
             get { return Math.Round(A * B * C, 9); }
@@ -239,8 +238,6 @@ namespace PudelkoLibrary
             return GetEnumerator();
         }
 
-
-
         #endregion
 
         //Parsing method
@@ -269,8 +266,7 @@ namespace PudelkoLibrary
             else
                 throw new ArgumentException("The input string is not correct format last throw");
 
-            return new Pudelko(a, b, c, unit);
-           
+            return new Pudelko(a, b, c, unit);           
         }
     }
 }
