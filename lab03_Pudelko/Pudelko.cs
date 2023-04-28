@@ -227,16 +227,19 @@ namespace PudelkoLibrary
         }
 
         #region IEnumerator interface
-        IEnumerator<double> IEnumerable<double>.GetEnumerator()
+        public  IEnumerator<double> GetEnumerator()
         {
             yield return A;
             yield return B;
             yield return C;
         }
-        public IEnumerator GetEnumerator()
+
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return (IEnumerator)this;
+            return GetEnumerator();
         }
+
+
 
         #endregion
 
@@ -258,9 +261,7 @@ namespace PudelkoLibrary
 
             UnitOfMeasure unit;
             if (values[1].Trim() == "m")
-            {
-                unit = UnitOfMeasure.meter;
-            }
+                unit = UnitOfMeasure.meter;            
             else if (values[1].Trim() == "cm")
                 unit = UnitOfMeasure.centimeter;
             else if (values[1].Trim() == "mm")
