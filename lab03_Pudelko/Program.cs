@@ -4,45 +4,61 @@ using System.Numerics;
 using System.Collections;
 using System.Globalization;
 using PudelkoLibrary.Enums;
+using System.Runtime.CompilerServices;
 
-//Pudelko p = new Pudelko(0,1,1, PudelkoLibrary.Enums.UnitOfMeasure.milimeter);
+namespace PudelkoLibrary
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            // List of pudelko objects
+            List<Pudelko> pudelkoList = new()
+            {
+                new Pudelko(2.5, 4, 4, UnitOfMeasure.centimeter),
+                new Pudelko(2.5, 4, 4, UnitOfMeasure.meter),
+                new Pudelko(100, 250, 350, UnitOfMeasure.centimeter),
+                new Pudelko(100, 250, 350, UnitOfMeasure.centimeter),
+                new Pudelko(null, 250, null, UnitOfMeasure.centimeter),
+                new Pudelko(null, null, null, UnitOfMeasure.milimeter),
+                Pudelko.Parse("2000 mm × 9321 mm × 100 mm"),
+                Pudelko.Parse("2.123 m × 4.56 m × 9.12 m")
 
-//Console.WriteLine(p.ToString());
+             };
 
-//P(2.5, 9.321, 0.1) == P.Parse("2.500 m × 9.321 m × 0.100 m")
-CultureInfo.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
-//Console.WriteLine("Culture is {0}", CultureInfo.CurrentCulture.Name);
+            Console.WriteLine("List of Pudelko objects: ");
+            foreach( Pudelko p in pudelkoList )
+                Console.WriteLine(p.ToString());
 
-//string input = "2.500 m × 9.321 m × 0.100 m";
-//string[] values = input.Split(" ");
+            pudelkoList.Sort(Comparision);
 
-//double a, b, c;
-/*string str = "2.500";
-double d;
-bool success = double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out d);
-Console.WriteLine(success);*/
+            Console.WriteLine("\nList of sorted Pudelko objects: ");
+            foreach(Pudelko p in pudelkoList)
+                Console.WriteLine(p.ToString());
 
-//Convert.ToDouble(values[0], out a);
-//double.TryParse(values[0], out double b);
-//Console.WriteLine(b);
-//double.TryParse(values[6], out c);
+            static int Comparision(Pudelko p1, Pudelko p2)
+            {
+                if (p1 is null || p2 is null)
+                    throw new ArgumentOutOfRangeException("Pudelko can not be null");
+                if (p1.Volume.CompareTo(p2.Volume) != 0)
+                    return p1.Volume.CompareTo(p2.Volume);
+                else if (p1.Area.CompareTo(p2.Area) != 0)
+                    return p1.Area.CompareTo(p2.Area);
+                else
+                    return (p1.A + p1.B + p1.C).CompareTo(p2.A + p2.B + p2.C);
+            }
 
-/*Console.WriteLine(b);
+            Console.WriteLine($"\nSprawdzenie metody Equals. Czy pudełko\n{pudelkoList[0]}\njest równe pudełkom\n{pudelkoList[1]} \n{pudelkoList[2]}");
+            Console.WriteLine($"{pudelkoList[0].Equals(pudelkoList[1])}\n{pudelkoList[1].Equals(pudelkoList[2])}");
 
-foreach (var x in values)
-    Console.WriteLine(x);*/
+            var newInstance = new Pudelko(5, 8, 2, UnitOfMeasure.meter);
+            Console.WriteLine($"\nSprawdzenie metody Kompresuj. Zamiana pudełka\n{newInstance}, o objętości {newInstance.Volume} m3 na pudełko sześcienne");
+            var compressedPudelko = newInstance.Kompresuj();
 
-string s = "2.500 m × 9.321 m × 0.100 m";
+            Console.WriteLine($"Nowe pudełko sześcienne ma dlugości boków {compressedPudelko.ToString()}");
 
-var p = new Pudelko(2.5, 9.321, 0.1);
-var p1 = new Pudelko(2.5, 9.321, 0.1, UnitOfMeasure.meter);
-var p2 = new Pudelko(250, 932.1, 10, UnitOfMeasure.centimeter);
-var p3 = new Pudelko(2500, 9321, 100, UnitOfMeasure.milimeter);
 
-var ps = Pudelko.Parse(s);
+        }
+    }
+}
 
-Console.WriteLine(p == ps);
-Console.WriteLine(p == p1);
-Console.WriteLine(p1 == ps);
-Console.WriteLine(p2 == ps);
-Console.WriteLine(p3 == ps);

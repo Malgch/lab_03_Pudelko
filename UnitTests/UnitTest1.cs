@@ -612,6 +612,8 @@ namespace UnitTests
         #region Parsing =========================================
         [DataTestMethod, TestCategory("Parsing string meters")]
         [DataRow("2.500 m × 9.321 m × 0.100 m", 2.500, 9.321, 0.1, UnitOfMeasure.meter)]
+        [DataRow("2.500 cm × 9.321 cm × 10 cm", 0.025, 0.093, 0.1, UnitOfMeasure.meter)]
+        [DataRow("25 mm × 93.21 mm × 100 mm", 0.025, 0.093, 0.1, UnitOfMeasure.meter)]
 
         public void ParsingMethod(string input, double expectedB, double expectedC, double expectedD, UnitOfMeasure unit)
         {
@@ -621,18 +623,21 @@ namespace UnitTests
             Assert.AreEqual(expectedPudelko, actualPudelko);
         }
 
-        [DataTestMethod, TestCategory("Parsing string centimeters")]
-        [DataRow("2.500 cm × 9.321 cm × 10 cm", 0.025, 0.093, 0.1, UnitOfMeasure.meter)]
-
-        public void ParsingMethod_cm(string input, double expectedB, double expectedC, double expectedD, UnitOfMeasure unit)
-        {
-            Pudelko expectedPudelko = new Pudelko(expectedB, expectedC, expectedD, unit);
-            Pudelko actualPudelko = Pudelko.Parse(input);
-
-            Assert.AreEqual(expectedPudelko, actualPudelko);
-        }
-
         #endregion
+
+        [DataTestMethod, TestCategory("Extension Method - Kompresuj")]
+        [DataRow(3, 3, 3, 27, 3, UnitOfMeasure.meter)]
+
+        public void ExtensionMethodKompresuj(double inputA, double inputB, double inputC, double expectedVolume, double expectedEdge, UnitOfMeasure unit)
+        {
+            Pudelko expectedPudelko = new Pudelko(inputA, inputB, inputC, unit);
+
+            Pudelko compressedPudelko = expectedPudelko.Kompresuj();
+            double getInputVolume = compressedPudelko.Volume;
+
+            Assert.AreEqual(expectedVolume, getInputVolume);
+            Assert.AreEqual(expectedEdge, compressedPudelko.A);
+        }
 
     }
 }

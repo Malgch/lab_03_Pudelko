@@ -82,7 +82,7 @@ namespace PudelkoLibrary
             {
                 throw new ArgumentOutOfRangeException("The sizes of the box can not have negative values!");
             }
-            else if ((aMeters >= 10) || (bMeters >= 10) || (cMeters >= 10))
+            else if ((aMeters > 10) || (bMeters > 10) || (cMeters > 10))
             {
                 throw new ArgumentOutOfRangeException("The size of box can not be greater than 10 meters!");
             }
@@ -116,7 +116,7 @@ namespace PudelkoLibrary
                     throw new ArgumentException("Please provide correct unit of measure");
             }
         }
-
+        #region ToString method
         public override string ToString() //meters
         {
             string defaultEnumMeters = "m";
@@ -144,16 +144,15 @@ namespace PudelkoLibrary
         {
             return this.ToString(format, CultureInfo.CurrentCulture);
         }
+        #endregion
 
-        public double Volume
-        {
-            get { return Math.Round(A * B * C, 9); }
+        public double Volume { get { return Math.Round(A * B * C, 9); }
         }
 
-        public double Area
-        {
-            get { return Math.Round(2 * A + 2 * B + 2 * C, 6); }
+        public double Area {  get { return Math.Round(2 * A + 2 * B + 2 * C, 6); }
         }
+
+        #region Equals and operators
         public bool Equals(Pudelko? other)
         {
             if (other is null) return false;
@@ -196,7 +195,9 @@ namespace PudelkoLibrary
             double lenght = box1Dimensions[0] + box2Dimensions[0];
             return new Pudelko(height, width, lenght);
         }
+        #endregion
 
+        #region Conversios explicit implicit
         public static explicit operator double[](Pudelko box) //converter to double array
         {
             double[] converted = { (double)box.A, (double)box.B, (double)box.C };
@@ -207,7 +208,9 @@ namespace PudelkoLibrary
         {
             return new Pudelko { A = ((double)dimensions.a / 1000), B = (double)dimensions.b / 1000, C = (double)dimensions.c / 1000, Unit = UnitOfMeasure.milimeter };
         }
+        #endregion
 
+        #region Indexer
         public double this[int index]
         {
             get {
@@ -224,9 +227,10 @@ namespace PudelkoLibrary
                 }
             }
         }
+        #endregion
 
         #region IEnumerator interface
-        public  IEnumerator<double> GetEnumerator()
+        public IEnumerator<double> GetEnumerator()
         {
             yield return A;
             yield return B;
@@ -240,8 +244,8 @@ namespace PudelkoLibrary
 
         #endregion
 
-        //Parsing method
 
+        #region Parsing string to object method
         public static Pudelko Parse(string input)
         {
             CultureInfo.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
@@ -249,9 +253,10 @@ namespace PudelkoLibrary
 
             string[] values = input.Split(" ");
             if (values.Length != 8) throw new ArgumentException("Input string is not in correct format");
+            if (values[1] != values[4] || values[1] != values[7]) throw new FormatException("Units are not correct!");
+            if (values[2] != "×" || values[5] != values[2]) throw new FormatException("Fromat is not correct");
 
             double a, b, c;
-
             double.TryParse(values[0].Trim(), out a);
             double.TryParse(values[3].Trim(), out b);
             double.TryParse(values[6].Trim(), out c);
@@ -264,9 +269,10 @@ namespace PudelkoLibrary
             else if (values[1].Trim() == "mm")
                 unit = UnitOfMeasure.milimeter;
             else
-                throw new ArgumentException("The input string is not correct format last throw");
+                throw new ArgumentException("The input string is not correct format");
 
             return new Pudelko(a, b, c, unit);           
         }
+        #endregion 
     }
 }
